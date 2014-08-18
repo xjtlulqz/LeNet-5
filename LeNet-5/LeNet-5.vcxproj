@@ -64,7 +64,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="convolution_layer.h" />
+    <ClInclude Include="full_connection_layer.h" />
+    <ClInclude Include="layer.h" />
+    <ClInclude Include="lenet5.h" />
     <ClInclude Include="mnist_parser.h" />
+    <ClInclude Include="network.h" />
+    <ClInclude Include="subsampling_layer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="_test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
