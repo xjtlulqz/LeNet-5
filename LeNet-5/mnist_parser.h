@@ -44,6 +44,10 @@ namespace lenet5{
 			
 		}
 
+		// vector for store test and train samples
+		std::vector<Sample*> test_sample;
+		std::vector<Sample*> train_sample;
+
 	private:
 		std::vector<Sample*> load(std::string fimage, std::string flabel){
 			std::fstream in;
@@ -146,9 +150,7 @@ namespace lenet5{
 		std::string train_img_fname;
 		std::string train_lbl_fname;
 
-		// vector for store test and train samples
-		std::vector<Sample*> test_sample;
-		std::vector<Sample*> train_sample;
+		
 	};
 
 } // namespace lenet5
