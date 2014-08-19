@@ -9,8 +9,11 @@ int main(){
 	s.test();
 	*/
 	Convolutional_Layer c(32, 1, 6, 5);
-	for (int i = 0; i < 100000; i++)
-		std::cout << c.uniform_rand<float>(-1, 1) << std::endl;;
+	vector<float> v(1000, 0);
+	c.uniform_rand(v.begin(), v.end(), -1, 1);
+	for (auto i = v.begin(); i != v.end(); i++){
+		std::cout << *i << endl;
+	}
 	getchar();
 	return 0;
 }

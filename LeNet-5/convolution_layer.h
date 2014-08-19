@@ -4,26 +4,21 @@
 #include "boost\random.hpp"
 #pragma once
 namespace lenet5 {
-
-
-	
 	class Convolutional_Layer :public Layer
 	{
 	public:
-		Convolutional_Layer(size_t in_size_, size_t in_number_, size_t fm_number_, size_t kernel_size_):
-		in_size(in_size_), in_number(in_number_), kernel_size(kernel_size_), fm_number(fm_number_){}
+		Convolutional_Layer(size_t in_size_, size_t in_depth_, size_t out_depth_, size_t kernel_size_):
+		in_size(in_size_), in_depth(in_depth_), kernel_size(kernel_size_), out_depth(out_depth_),
+		out_size(output_size()){
+			weight.resize(kernel_size * kernel_size * in_depth * out_depth);
+			bias_weight.resize(out_depth);
+			output.resize(out_size * out_size * out_depth);
+		}
 
 		void init_weight(){
-			for (size_t i = 0; i < fm_number; i++){
-				std::vector<std::float_t> t;
-				for (size_t i = 0; i < kernel_size * kernel_size; i++){
-					
-					t.push_back(uniform_rand<float_t>(-1, 1));
-				}
-				weight.push_back(t);
-				srand((int)time(0));
-				bias_weight.push_back(uniform_rand<float_t>(-1, 1));
-			}
+			const float_t weight_base = 0.5 / std::sqrt(fan_in());
+			uniform_rand(weight.begin(), weight.end(), -weight_base, weight_base);
+			uniform_rand(bias_weight.begin(), bias_weight.end(), -weight_base, weight_base);
 		}
 		/*
 		inline int uniform_random(){
@@ -32,54 +27,42 @@ namespace lenet5 {
 		}
 		*/
 
-	
 		size_t output_size(){
 			return in_size - kernel_size + 1;
 		}
 
 		int fan_in(){
-			return kernel_size * kernel_size * in_number;
+			return kernel_size * kernel_size * in_depth;
 		}
 
 		int fan_out(){
-			return kernel_size * kernel_size * fm_number;
+			return kernel_size * kernel_size * out_depth;
 		}
 
-		template<typename T>
-		inline T uniform_rand(T min, T max) {
-			static boost::mt19937 gen(0);
-			boost::uniform_real<T> dst(min, max);
-			return dst(gen);
+		int in_index(int x, int y, int channel) {
+			return (in_size * in_size) * channel + in_size * y + x;
 		}
 
-		/*
-		std::vector<std::float_t> conv(std::vector<std::float_t> img, std::vector<std::float_t> w){
-			std::vector<std::float_t> v;
-			for (size_t i = 0; i < output_size(); i++){
-				for (size_t j = 0; j < output_size(); j++){
-					int f = 0;
-					for (size_t k = 0; k < kernel_size *kernel_size; k++){
-						if (k < kernel_size)
-							f += w[k] * img[(i * in_size) + j + k];
-						else
-							f += w[k] * img[((i + (k / kernel_size)) * in_size) + j + (k % kernel_size)];
-					}
-					v.push_back(f);
-				}
-			}
-			return v;
+		int out_index(int x, int y, int channel){
+			return (out_size * out_size) * channel + out_size * y + x;
 		}
-		*/
+
+		void conv(){
+
+		}
+
+
 	private:
 		size_t pace; // convolve step
 		size_t in_size;
-		size_t in_number;
-		size_t fm_number; // output feature map number
+		size_t in_depth;
+		size_t out_size;
+		size_t out_depth; // output feature map number
 		size_t kernel_size;
-		std::vector<std::vector<std::float_t>> weight;
+		std::vector<std::float_t> weight; //
 		std::vector<std::float_t> bias_weight;
-		std::vector<Image*> input;
-		std::vector< std::vector<std::float_t> > output;
+		std::vector<std::float_t> input;
+		std::vector<std::float_t> output;
 		
 	};
 }// namespace lenet5
