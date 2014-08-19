@@ -6,16 +6,11 @@
 #include <exception>
 #include <cassert>
 #include <time.h>
+
+#include "data_structrue.h"
+
 #pragma once
 namespace lenet5{
-
-	struct Sample
-	{
-		uint8_t label;
-		std::vector<uint8_t> image;
-		Sample(uint8_t label_, std::vector<uint8_t> image_) :label(label_), image(image_){}
-	};
-
 
 	class Mnist_Parser
 	{
@@ -36,63 +31,17 @@ namespace lenet5{
 			return train_sample;
 		}
 
-		void display(std::vector<uint8_t> v){
-			for (size_t i = 0; i < v.size(); i++){
-				if (v[i] > 200)
-					std::cout << 1;
-				else
-					std::cout << 0;
-
-				if (i % 32 == 31) std::cout << std::endl;
-			}
-		}
-
 		void test(){
 			srand((int)time(0));
-			int i = rand() % 10000;
+			size_t i = (int)(rand());
+			std::cout << i << std::endl;
 			std::cout << (int)test_sample[i]->label << std::endl;
-			display(test_sample[i]->image);
-			i = rand() % 60000;
-			std::cout << (int)train_sample[i]->label << std::endl;
-			display(train_sample[i]->image);
-		}
-
-		void up2_32(){
+			test_sample[i]->image->display();
 			
-			for (size_t i = 0; i < 60000; i++){
-				std::vector<std::uint8_t> new_img(32 * 2, 0);
-				for (size_t j = 0; j < 28; j++){
-					new_img.push_back(0);
-					new_img.push_back(0);
-					for (size_t k = 0; k < 28; k++){
-						new_img.push_back((train_sample[i]->image)[j * 28 + k]);
-					}
-					new_img.push_back(0);
-					new_img.push_back(0);
-				}
-				for (size_t i = 0; i < 64; i++){
-					new_img.push_back(0);
-				}
-				train_sample[i]->image = new_img;
-			}
-
-			for (size_t i = 0; i < 10000; i++){
-				std::vector<std::uint8_t> new_img(32 * 2, 0);
-				for (size_t j = 0; j < 28; j++){
-					new_img.push_back(0);
-					new_img.push_back(0);
-					for (size_t k = 0; k < 28; k++){
-						new_img.push_back((test_sample[i]->image)[j * 28 + k]);
-					}
-					new_img.push_back(0);
-					new_img.push_back(0);
-				}
-				for (size_t i = 0; i < 64; i++){
-					new_img.push_back(0);
-				}
-				test_sample[i]->image = new_img;
-			}
-
+			size_t j = (int)(rand() * 60000);
+			std::cout << (int)(train_sample[i]->label) << std::endl;
+			train_sample[i]->image->display();
+			
 		}
 
 	private:
@@ -118,19 +67,32 @@ namespace lenet5{
 			assert(swapEndien_32(rows) == 28);
 			assert(swapEndien_32(cols) == 28);
 
-			std::vector< std::vector<uint8_t> > images;
+			std::vector< std::float_t> row;
+			std::vector< std::vector<float_t> > img;
+			std::vector<Img> images;
 
 			uint8_t pixel = 0;
-			size_t index = 0;
-			std::vector<uint8_t> img;
+			size_t col_index = 0;
+			size_t row_index = 0;
 			while (!in.eof()){
 				in.read((char*)&pixel, sizeof(uint8_t));
-				img.push_back(pixel);
-				index++;
-				if (index == 28 * 28){
-					index = 0;
-					images.push_back(img);
-					img.clear();
+				col_index++;
+				row.push_back((float_t)pixel);
+				if (col_index == 28){
+					img.push_back(row);
+					
+					row.clear();
+					col_index = 0;
+					
+					row_index++;
+					if (row_index == 28){
+						Img i = new Image(28, img);
+						i->upto_32();
+						//i->display();
+						images.push_back(i);
+						img.clear();
+						row_index = 0;
+					}
 				}
 			}
 
@@ -170,6 +132,7 @@ namespace lenet5{
 			return samples;
 		}
 
+		// reverse endien for uint32_t
 		std::uint32_t swapEndien_32(std::uint32_t value){
 			return ((value & 0x000000FF) << 24) |
 				((value & 0x0000FF00) << 8) |
@@ -177,11 +140,13 @@ namespace lenet5{
 				((value & 0xFF000000) >> 24);
 		}
 
+		// filename for mnist data set
 		std::string test_img_fname;
 		std::string test_lbl_fname;
 		std::string train_img_fname;
 		std::string train_lbl_fname;
 
+		// vector for store test and train samples
 		std::vector<Sample*> test_sample;
 		std::vector<Sample*> train_sample;
 	};

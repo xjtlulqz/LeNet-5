@@ -3,6 +3,7 @@
 #include "activation.h"
 
 namespace lenet5{
+	/*
 	class Subsampling_Layer :public Layer
 	{
 	public:
@@ -22,8 +23,8 @@ namespace lenet5{
 							sum += in[(i + 1) *in_size + j + k];
 						}
 					}
-					f.push_back(func->f(sum + bias));
-				}
+					f.push_back(func->f(sum))// + bias));
+						
 			}
 			return f;
 		}
@@ -35,4 +36,5 @@ namespace lenet5{
 		activation *func;
 		
 	};
+	*/
 } // namespace lenet5
