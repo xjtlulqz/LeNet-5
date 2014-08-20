@@ -25,7 +25,11 @@ int main(){
 	n_v = c.output;
 	int index = 0;
 	for (int i = 0; i < 32 * 32; i++){
-		std::cout << n_v[i] << endl;
+		if (n_v[i] > 0)
+			std::cout << 1;
+		else
+			std::cout << 0;
+		//std::cout << n_v[i];
 		index++;
 		if (index == 32){
 			index = 0;

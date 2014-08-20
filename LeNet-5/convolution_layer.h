@@ -61,15 +61,19 @@ namespace lenet5 {
 				for (int out = 0; out < out_depth; out++){
 					for (int x = 0; x < out_size; x++){
 						for (int y = 0; y < out_size; y++){
+							
 							std::vector<float_t> v, w;
 							for (int m = 0; m < kernel_size; m++){
 								for (int n = 0; n < kernel_size; n++){
+									//std::cout << weight_index(m, n, in * out_depth + out) << std::endl;
 									v.push_back(input[in_index(x + m, y + n, in)]);
-									w.push_back(weight[weight_index(x + m, y + n, in * out_depth + out)]);
+									w.push_back(weight[weight_index(m, n, in * out_depth + out)]);
 								}
 							}
 							float_t f = _conv(v, w);
-							output[out_index(x, y, out_depth)] = f;
+							
+							//std::cout <<output.size() << std::endl;
+							output[out_index(x, y, out)] = f;
 						}
 					}
 				}
