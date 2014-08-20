@@ -36,9 +36,6 @@
     <ClInclude Include="lenet5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="activation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="data_structrue.h">
       <Filter>Header Files</Filter>
     </ClInclude>

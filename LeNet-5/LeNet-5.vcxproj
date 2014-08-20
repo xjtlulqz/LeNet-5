@@ -65,7 +65,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="activation.h" />
     <ClInclude Include="convolution_layer.h" />
     <ClInclude Include="data_structrue.h" />
     <ClInclude Include="full_connection_layer.h" />
