@@ -12,12 +12,26 @@ namespace lenet5 {
 	{
 	public:
 		Convolutional_Layer(size_t in_size_, size_t in_depth_, size_t out_depth_, size_t kernel_size_) :
-			Layer(in_size_, in_depth_, out_depth_), kernel_size(kernel_size_)
+			Layer(in_size_, in_depth_, out_depth_), kernel_size(kernel_size_), connection_table(Connection_Table(out_depth, in_depth))
 		{
 			out_size = output_size();
 			weight.resize(kernel_size * kernel_size * in_depth * out_depth);
 			bias_weight.resize(out_depth);
 			output.resize(out_size * out_size * out_depth);
+
+			//init weight vector
+			this->init_weight();
+		}
+
+		Convolutional_Layer(size_t in_size_, size_t in_depth_, size_t out_depth_, size_t kernel_size_, const Connection_Table& connection_table_):
+			Layer(in_size_, in_depth_, out_depth_), kernel_size(kernel_size_), connection_table(connection_table_)
+		{
+			out_size = output_size();
+			weight.resize(kernel_size * kernel_size * in_depth * out_depth);
+			bias_weight.resize(out_depth);
+			output.resize(out_size * out_size * out_depth);
+
+			this->init_weight();
 		}
 
 		/*
@@ -46,21 +60,23 @@ namespace lenet5 {
 		void conv(){
 			for (int out = 0; out < out_depth; out++){
 				for (int in = 0; in < in_depth; in++){
-					for (int x = 0; x < out_size; x++){
-						for (int y = 0; y < out_size; y++){
-							
-							std::vector<float_t> v, w;
-							for (int m = 0; m < kernel_size; m++){
-								for (int n = 0; n < kernel_size; n++){
-									//std::cout << weight_index(m, n, in * out_depth + out) << std::endl;
-									v.push_back(input[in_index(x + m, y + n, in)]);
-									w.push_back(weight[weight_index(m, n, in * out_depth + out)]);
+					if (connection_table.is_connected(out, in)){
+						for (int x = 0; x < out_size; x++){
+							for (int y = 0; y < out_size; y++){
+
+								std::vector<float_t> v, w;
+								for (int m = 0; m < kernel_size; m++){
+									for (int n = 0; n < kernel_size; n++){
+										//std::cout << weight_index(m, n, in * out_depth + out) << std::endl;
+										v.push_back(input[in_index(x + m, y + n, in)]);
+										w.push_back(weight[weight_index(m, n, in * out_depth + out)]);
+									}
 								}
+								float_t f = vec_t_conv(v, w);
+
+								//std::cout <<output.size() << std::endl;
+								output[out_index(x, y, out)] += f;
 							}
-							float_t f = vec_t_conv(v, w);
-							
-							//std::cout <<output.size() << std::endl;
-							output[out_index(x, y, out)] += f;
 						}
 					}
 				}
@@ -75,6 +91,8 @@ namespace lenet5 {
 	/*private:*/
 		size_t pace; // convolve step
 		size_t kernel_size;
+
+		const Connection_Table connection_table;
 	};
 } // namespace lenet5
 

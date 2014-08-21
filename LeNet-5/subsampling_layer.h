@@ -14,6 +14,17 @@ namespace lenet5{
 			weight.resize(pace * pace * in_depth);
 			bias_weight.resize(out_depth);
 			output.resize(out_size * out_size * out_depth);
+			
+			// init weight vector
+			this->init_weight();
+		}
+
+		size_t fan_in(){
+			return pace * pace * in_depth;
+		}
+
+		size_t fan_out(){
+			return pace * pace * out_depth;
 		}
 
 		int weight_index(int x, int y, int channel){

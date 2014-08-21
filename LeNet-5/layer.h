@@ -1,4 +1,5 @@
 #include <iostream>
+#include "boost\random.hpp"
 #pragma once
 namespace lenet5 {
 
@@ -9,6 +10,7 @@ namespace lenet5 {
 		
 		virtual size_t fan_in() = 0;
 		virtual size_t fan_out() = 0;
+		virtual size_t output_size() = 0;
 		
 		void init_weight(){
 			const float_t weight_base = 0.5 / std::sqrt(fan_in());
@@ -50,6 +52,12 @@ namespace lenet5 {
 
 		float_t sigmod(float_t x) const { return 1.0 / (1.0 + std::exp(-x)); }
 
+		float_t tanh(float_t x) const {
+			const float_t ep = std::exp(x);
+			const float_t em = std::exp(-x);
+			return (ep - em) / (ep + em);
+		}
+
 		size_t in_size;
 		size_t in_depth;
 		size_t out_size;
@@ -64,4 +72,4 @@ namespace lenet5 {
 		Layer* next;
 	};
 
-}// namespace lenet5
+} // namespace lenet5

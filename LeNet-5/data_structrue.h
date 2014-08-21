@@ -53,4 +53,25 @@ namespace lenet5{
 		Img image;
 		Sample(float_t label_, Img image_) :label(label_), image(image_){}
 	};
+
+	// tiny-cnn connection_table
+	struct Connection_Table {
+		Connection_Table() : rows_(0), cols_(0) {}
+		Connection_Table(size_t rows, size_t cols) :rows_(rows), cols_(cols), connected_(rows * cols, true){}
+		Connection_Table(const bool *ar, size_t rows, size_t cols) : connected_(rows * cols), rows_(rows), cols_(cols) {
+			std::copy(ar, ar + rows * cols, connected_.begin());
+		}
+
+		bool is_connected(int x, int y) const {
+			return is_empty() ? true : connected_[y * cols_ + x];
+		}
+
+		bool is_empty() const {
+			return rows_ == 0 && cols_ == 0;
+		}
+
+		std::vector<bool> connected_;
+		size_t rows_;
+		size_t cols_;
+	};
 }
