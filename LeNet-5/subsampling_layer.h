@@ -2,6 +2,8 @@
 #include <vector>
 #include "activation.h"
 
+#pragma once
+
 namespace lenet5{
 	
 	class Subsampling_Layer :public Layer
@@ -36,6 +38,10 @@ namespace lenet5{
 		}
 
 		void forward(){//pooling
+			std::cout << "start pooling" << std::endl;
+			std::cout << "input size:" << this->input.size() << std::endl;
+			std::cout << "weight_size:" << this->weight.size() << std::endl;
+			std::cout << "output_size:" << this->output.size() << std::endl;
 			for (int in = 0; in < in_depth; in++){
 				for (int x = 0; x < in_size; x += 2){
 					for (int y = 0; y < in_size; y += 2){
@@ -43,16 +49,19 @@ namespace lenet5{
 						std::vector<float_t> v, w;
 						for (int m = 0; m < pace; m++){
 							for (int n = 0; n < pace; n++){
+								//std::cout << in_index(x + m, y + n, in) << std::endl;
+								//std::cout << weight_index(m, n, in) << std::endl;
 								v.push_back(input[in_index(x + m, y + n, in)]);
 								w.push_back(weight[weight_index(m, n, in)]);
 							}
 						}
 						float_t f = vec_t_conv(v, w);
 						// sigmod with bias
-						output[out_index(x, y, in)] = sigmod(bias_weight[in] + f);
+						output[out_index(x/2, y/2, in)] = sigmod(bias_weight[in] + f);
 					}
 				}
 			}
+			std::cout << "pooling complete." << std::endl;
 		}
 
 	private:

@@ -6,7 +6,7 @@ namespace lenet5 {
 	struct Layer
 	{
 		Layer(size_t in_size_, size_t in_depth_, size_t out_depth_) :
-			in_size(in_size_), in_depth(in_depth_), out_depth(out_depth_){}
+			in_size(in_size_), in_depth(in_depth_), out_depth(out_depth_), prev(nullptr), next(nullptr){}
 		
 		virtual size_t fan_in() = 0;
 		virtual size_t fan_out() = 0;

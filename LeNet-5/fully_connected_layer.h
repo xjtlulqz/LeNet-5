@@ -32,6 +32,7 @@ namespace lenet5{
 		}
 
 		void forward(){//connect
+			std::cout << "fully connected layer" << std::endl;
 			for (size_t out = 0; out < out_depth; out++){
 				float f = 0;
 				for (size_t in = 0; in < in_depth; in ++){

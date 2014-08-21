@@ -12,7 +12,7 @@ namespace lenet5 {
 	{
 	public:
 		Convolutional_Layer(size_t in_size_, size_t in_depth_, size_t out_depth_, size_t kernel_size_) :
-			Layer(in_size_, in_depth_, out_depth_), kernel_size(kernel_size_), connection_table(Connection_Table(out_depth, in_depth))
+			Layer(in_size_, in_depth_, out_depth_), pace(1), kernel_size(kernel_size_)
 		{
 			out_size = output_size();
 			weight.resize(kernel_size * kernel_size * in_depth * out_depth);
@@ -58,6 +58,7 @@ namespace lenet5 {
 		}
 
 		void forward(){//convolve
+			std::cout << "start convolve" << std::endl;
 			for (int out = 0; out < out_depth; out++){
 				for (int in = 0; in < in_depth; in++){
 					if (connection_table.is_connected(out, in)){
@@ -86,6 +87,7 @@ namespace lenet5 {
 					}
 				}
 			}
+			std::cout << "convolve complete" << std::endl;
 		}
 
 	/*private:*/

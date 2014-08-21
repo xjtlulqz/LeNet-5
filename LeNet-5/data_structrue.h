@@ -43,6 +43,16 @@ namespace lenet5{
 
 			size = 32;
 		}
+
+		std::vector<std::float_t> extend(){
+			std::vector<float_t> v;
+			for (size_t i = 0; i < size; i++){
+				for (size_t j = 0; j < size; j++){
+					v.push_back(img[i][j]);
+				}
+			}
+			return v;
+		}
 	};
 
 	typedef Image* Img;
@@ -50,8 +60,8 @@ namespace lenet5{
 	struct Sample
 	{
 		uint8_t label; // label for a specific digit
-		Img image;
-		Sample(float_t label_, Img image_) :label(label_), image(image_){}
+		std::vector<float_t> image;
+		Sample(float_t label_, std::vector<float_t> image_) :label(label_), image(image_){}
 	};
 
 	// tiny-cnn connection_table

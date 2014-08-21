@@ -31,9 +31,9 @@ namespace lenet5 {
 		}
 
 		void init_RBF_weight(){
-			for_each(weight.begin(), weight.end(), [&](float_t w){
-				uniform_rand<float_t>(-1, 1) < 0 ? w = -1 : w = 1;
-			});
+			for (size_t i = 0; i < weight.size(); i++){
+				weight[i] = (uniform_rand<float_t>(-1, 1) > 0 ? 1 : -1);
+			}
 		}
 
 		int weight_index(int x, int y, int channel){
@@ -41,14 +41,16 @@ namespace lenet5 {
 		}
 
 		void forward(){//forward
+			std::cout << "start RBE for output" << std::endl;
 			for (size_t out = 0; out < out_depth; out++){
 				float sum = 0;
 				for (size_t in = 0; in < in_depth; in++){
-					float x = input[in] - weight[weight_index(0, in, out)];
+					float_t x = input[in] - weight[weight_index(0, in, out)];
 					sum += x* x;
 				}
 				output[out] = sum;
 			}
+			std::cout << "RBE complete." << std::endl;
 		}
 
 	};

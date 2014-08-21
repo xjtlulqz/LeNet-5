@@ -36,11 +36,11 @@ namespace lenet5{
 			size_t i = (int)(rand());
 			std::cout << i << std::endl;
 			std::cout << (int)test_sample[i]->label << std::endl;
-			test_sample[i]->image->display();
+			//test_sample[i]->image->display();
 			
 			size_t j = (int)(rand() * 60000);
 			std::cout << (int)(train_sample[i]->label) << std::endl;
-			train_sample[i]->image->display();
+			//train_sample[i]->image->display();
 			
 		}
 
@@ -128,7 +128,7 @@ namespace lenet5{
 
 			std::vector<Sample*> samples;
 			for (int i = 0; i < swapEndien_32(number); i++){
-				samples.push_back(new Sample(labels[i], images[i]));
+				samples.push_back(new Sample(labels[i], images[i]->extend()));
 			}
 
 			std::cout << "complete" << std::endl;
