@@ -58,6 +58,8 @@ namespace lenet5 {
 			return (ep - em) / (ep + em);
 		}
 
+		virtual void forward() = 0;
+
 		size_t in_size;
 		size_t in_depth;
 		size_t out_size;
@@ -67,7 +69,6 @@ namespace lenet5 {
 		std::vector<std::float_t> input;
 		std::vector<std::float_t> output;
 
-	private:
 		Layer* prev;
 		Layer* next;
 	};

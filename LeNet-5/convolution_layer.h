@@ -57,7 +57,7 @@ namespace lenet5 {
 			return (kernel_size * kernel_size) * channel + kernel_size * x + y;
 		}
 
-		void conv(){
+		void forward(){//convolve
 			for (int out = 0; out < out_depth; out++){
 				for (int in = 0; in < in_depth; in++){
 					if (connection_table.is_connected(out, in)){

@@ -72,6 +72,7 @@
     <ClInclude Include="lenet5.h" />
     <ClInclude Include="mnist_parser.h" />
     <ClInclude Include="network.h" />
+    <ClInclude Include="output_layer.h" />
     <ClInclude Include="subsampling_layer.h" />
   </ItemGroup>
   <ItemGroup>

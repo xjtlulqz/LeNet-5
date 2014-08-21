@@ -10,13 +10,17 @@ namespace lenet5{
 		Subsampling_Layer(size_t in_size_, size_t in_depth_, size_t pace_) :
 			Layer(in_size_, in_depth_, in_depth_), pace(pace_)
 		{
-			out_size = in_size/ pace;
+			out_size = output_size();
 			weight.resize(pace * pace * in_depth);
 			bias_weight.resize(out_depth);
 			output.resize(out_size * out_size * out_depth);
 			
 			// init weight vector
 			this->init_weight();
+		}
+
+		size_t output_size(){
+			return in_size / pace;
 		}
 
 		size_t fan_in(){
@@ -31,7 +35,7 @@ namespace lenet5{
 			return (pace * pace) * channel + pace * x + y;
 		}
 
-		void pooling(){
+		void forward(){//pooling
 			for (int in = 0; in < in_depth; in++){
 				for (int x = 0; x < in_size; x += 2){
 					for (int y = 0; y < in_size; y += 2){

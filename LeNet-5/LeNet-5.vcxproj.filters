@@ -39,6 +39,9 @@
     <ClInclude Include="fully_connected_layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="output_layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="_test.cpp">

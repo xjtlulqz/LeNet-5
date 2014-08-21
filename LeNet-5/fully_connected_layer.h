@@ -12,7 +12,15 @@ namespace lenet5{
 			bias_weight.resize(out_depth);
 			output.resize(out_size);
 
-			this->init_weight;
+			this->init_weight();
+		}
+
+		size_t fan_in(){
+			return in_depth;
+		}
+
+		size_t fan_out(){
+			return out_depth;
 		}
 		
 		size_t output_size(){
@@ -23,7 +31,7 @@ namespace lenet5{
 			return (channel * in_depth) + y;
 		}
 
-		void connect(){
+		void forward(){//connect
 			for (size_t out = 0; out < out_depth; out++){
 				float f = 0;
 				for (size_t in = 0; in < in_depth; in ++){

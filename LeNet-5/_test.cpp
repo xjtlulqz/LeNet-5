@@ -7,7 +7,7 @@ int main(){
 	s.load_testing();
 	s.load_training();
 	s.test();
-	*/
+	
 	Mnist_Parser m;
 	m.load_testing();
 	std::vector<std::vector<std::float_t>> v = m.test_sample[0]->image->img;
@@ -36,6 +36,7 @@ int main(){
 			std::cout << std::endl;
 		}
 	}
+	*/
 	getchar();
 	return 0;
 }
