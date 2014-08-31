@@ -45,7 +45,7 @@ namespace lenet5 {
 			assert(v.size() == w.size());
 			float_t f = 0;
 			for (size_t i = 0; i < v.size(); i++){
-				f += v[i] * w[i];
+				f += v[i] * w[v.size() - 1- i];
 			}
 			return f;
 		}
